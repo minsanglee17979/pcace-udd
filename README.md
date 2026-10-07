@@ -17,21 +17,21 @@ Original runs used Python 3.11.4, PyTorch 2.14.0, NumPy 2.4.6, ASE 3.29.0, MDAna
 
 ## 1 Train the committee
 
-Activate your environment and run from the repository root on a GPU. These launchers run directly, not through Slurm; on HPC, use a GPU allocation.
+Activate your pcace environment and run from the repository root. On Slurm HPC systems, adjust the partition and resource settings in `train.sbatch` for your cluster, then submit:
 
 Each member uses a different initialization seed and the same 90/10 training/validation split. Training has 100 classical-stage epochs followed by 100 full-model epochs.
 
 ```bash
-for seed in 101 202 303 404; do
-    bash "training/bb-$seed/run.sh" || break
-done
+sbatch train.sbatch
 ```
+
+This submits four independent training tasks, each requesting one GPU. They run in parallel when resources are available. Without Slurm, run `bash training/bb-101/run.sh` on a GPU; the other members use the same command with seeds 202, 303, and 404.
 
 The four trained models are saved as `training/bb-*/best_model.pth`.
 
 ## 2 Run MD and UDD
 
-After all four training runs finish successfully, run MD and UDD using those `best_model.pth` files. The final argument, `40`, sets the target temperature to 40 K for both simulations:
+After all four training runs finish successfully, run MD and UDD using those `best_model.pth` files. These commands run directly; on HPC, run them inside a GPU allocation. The final argument, `40`, sets the target temperature to 40 K for both simulations:
 
 ```bash
 bash md/run.sh "$(pwd)/training" 40
