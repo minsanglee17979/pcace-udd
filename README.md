@@ -27,11 +27,11 @@ for seed in 101 202 303 404; do
 done
 ```
 
-The four checkpoints are saved as `training/bb-*/best_model.pth`.
+The four trained models are saved as `training/bb-*/best_model.pth`.
 
 ## 2 Run MD and UDD
 
-After all four training runs finish successfully, run MD and UDD using their checkpoints:
+After all four training runs finish successfully, run MD and UDD using those `best_model.pth` files. The final argument, `40`, sets the target temperature to 40 K for both simulations:
 
 ```bash
 bash md/run.sh "$(pwd)/training" 40
