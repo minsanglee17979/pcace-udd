@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.DS_Store
+.venv/
+training/bb-*/*.pth
+*.out
+md/md.log
+udd/md.log
+*.dcd
+md/initial.pdb
+md/final.pdb
+udd/initial.pdb
+udd/final.pdb
+
